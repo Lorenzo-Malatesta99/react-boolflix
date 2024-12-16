@@ -1,47 +1,48 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import SearchBar from "./components/SearchBar";
+import Card from "./components/Card";
+import { MovieContext } from "./context/MovieContext";
 import "./App.css";
 
 const App = () => {
-  const [movies, setMovies] = useState([]);
-  const [tvShows, setTVShows] = useState([]);
+  const { movies, tvShows } = useContext(MovieContext);
 
   return (
     <div className="container">
-      <h1>Boolflix</h1>
-      <SearchBar onMovies={setMovies} onTVShows={setTVShows} />
+      <header className="d-flex justify-content-between align-items-center">
+        <h1 className="title-logo">Boolflix</h1>
+        <SearchBar />
+      </header>
       <div className="results mt-4">
         <div className="row">
-          <div className="col-6">
-            <h2 className="text-center">Film</h2>
-            {movies.length > 0 ? (
-              movies.map((movie) => (
-                <div key={movie.id} className="result-item">
-                  <h3>{movie.title}</h3>
-                  <h4>{movie.originalTitle}</h4>
-                  <p>Lingua: {movie.language}</p>
-                  <p>Voto: {movie.vote}</p>
-                </div>
-              ))
-            ) : (
-              <p>Nessun film trovato</p>
-            )}
-          </div>
-          <div className="col-6">
-            <h2 className="text-center">Serie TV</h2>
-            {tvShows.length > 0 ? (
-              tvShows.map((tv) => (
-                <div key={tv.id} className="result-item">
-                  <h3>{tv.title}</h3>
-                  <h4>{tv.originalTitle}</h4>
-                  <p>Lingua: {tv.language}</p>
-                  <p>Voto: {tv.vote}</p>
-                </div>
-              ))
-            ) : (
-              <p>Nessuna serie TV trovata</p>
-            )}
-          </div>
+          <h2 className="col-12 text-center second-title m-5">Films</h2>
+          {movies.length > 0 ? (
+            movies.map((movie) => (
+              <div
+                key={movie.id}
+                className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
+              >
+                <Card item={movie} type="movie" />
+              </div>
+            ))
+          ) : (
+            <p className="col-12">Nessun film trovato</p>
+          )}
+        </div>
+        <div className="row">
+          <h2 className="col-12 text-center second-title m-5">Serie TV</h2>
+          {tvShows.length > 0 ? (
+            tvShows.map((tv) => (
+              <div
+                key={tv.id}
+                className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
+              >
+                <Card item={tv} type="tv" />
+              </div>
+            ))
+          ) : (
+            <p className="col-12 text-center">Nessuna serie TV trovata</p>
+          )}
         </div>
       </div>
     </div>
